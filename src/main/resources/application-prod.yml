@@ -1,0 +1,14 @@
+spring:
+  #数据源配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/web?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: zhangzhao
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    connectionProperties: druid.stat.mergeSql=true
+
+# 端口号
+server:
+  context-path: /
+  port: 9999
