@@ -232,7 +232,6 @@ URL
         "currentStop": "北京西站",      //当前查询站点
         "operationTime": "5:00-23:00",  //该站点运营时间
         "priceType": "分段计价",        //计价方式
-        "branchCompany": null,          //子公司名称
         "lastStop": "3",                //最近车辆还有几站
         "lastDistance": 2.5,            //最近车辆距离
         "expectedTime": "6"             //预计到达时间

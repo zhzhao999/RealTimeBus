@@ -3,6 +3,8 @@
  */
 package top.zhzhao.web.model.bus.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 给前端的 实时公交对象
  *@author zhzhao
@@ -16,6 +18,7 @@ public class BusTimeVO {
     /** 计价方式 */
     private String priceType;
     /** 分公司名称 */
+    @JsonIgnore
     private String branchCompany;
     /** 最近还有几站 */
     private String lastStop;
