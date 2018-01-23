@@ -46,6 +46,14 @@ public class BusController {
     private BusNightLineService nightLineService;
 
     /**
+     * 测试接口
+     */
+    @GetMapping(value = "test")
+    public ResponseVO test(){
+        return ResponseVOUtils.generateSuccess(Constants.Msg.SUCCESS);
+    }
+
+    /**
      * 获取所有车辆
      */
     @PostMapping(value = "findAll")
