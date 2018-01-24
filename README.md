@@ -80,18 +80,19 @@ URL
 {
     "repCode": "0000",
     "repMsg": null,
-    "datas": [{
-             "lineKey": "1", //线路ID
-             "lineName": "1", //线路名称
-             "regionCode": "bj" //城市编码
-             },
-             {
-                 "lineKey": "2",
-                 "lineName": "2",
-                 "regionCode": "bj"
-             },
-             ...
-             ]
+    "datas": [
+         {
+         "lineKey": "1", //线路ID
+         "lineName": "1", //线路名称
+         "regionCode": "bj" //城市编码
+         },
+         {
+             "lineKey": "2",
+             "lineName": "2",
+             "regionCode": "bj"
+         },
+         ...
+     ]
 }
 ```
 
@@ -116,18 +117,19 @@ URL
 {
     "repCode": "0000",
     "repMsg": null,
-    "datas": [{
-             "lineKey": "1", //线路ID
-             "lineName": "1", //线路名称
-             "regionCode": "bj" //地区编码
-             },
-             {
-                 "lineKey": "2",
-                 "lineName": "2",
-                 "regionCode": "bj"
-             },
-             ...
-             ]
+    "datas": [
+        {
+         "lineKey": "1", //线路ID
+         "lineName": "1", //线路名称
+         "regionCode": "bj" //地区编码
+         },
+         {
+             "lineKey": "2",
+             "lineName": "2",
+             "regionCode": "bj"
+         },
+         ...
+     ]
 }
 ```
 #### 4.根据线路ID 查询车辆的始发站和终点站
