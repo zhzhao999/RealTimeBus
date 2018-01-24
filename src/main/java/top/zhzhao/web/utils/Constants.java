@@ -51,7 +51,7 @@ public interface Constants {
 
 	public interface Msg {
 		String SUCCESS = "请求成功";
-		String Error = "请求失败";
+		String Error = "服务器走丢了，请稍后再试";
 		String ParamError = "参数不合法";
 		String UpdateSuccess = "数据更新成功";
 		String UpdateError = "数据更新失败";

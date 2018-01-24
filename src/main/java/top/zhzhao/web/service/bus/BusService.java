@@ -16,5 +16,5 @@ import java.util.List;
 public interface BusService {
     List<LineDirVO> getLineDir(String id);
     List<LineDirVO> getDirStation(String lineId,String dirId);
-    BusTimeVO getBusTime(String lineId, String dirId, String stopId);
+    BusTimeVO getBusTime(String lineId, String dirId, String stopId) throws Exception ;
 }

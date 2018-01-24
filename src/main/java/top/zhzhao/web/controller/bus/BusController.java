@@ -130,11 +130,16 @@ public class BusController {
      */
     @PostMapping(value = "getBusTime")
     public ResponseVO getBusTime(String lineId,String dirId,String stopId){
-        if (StringUtils.isNotBlank(lineId) && StringUtils.isNotBlank(dirId) && StringUtils.isNotBlank(stopId)){
-            BusTimeVO busTime = busService.getBusTime(lineId,dirId,stopId);
-            return ResponseVOUtils.generateSuccess(busTime);
-        }else{
-            return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
+        try {
+            if (StringUtils.isNotBlank(lineId) && StringUtils.isNotBlank(dirId) && StringUtils.isNotBlank(stopId)){
+                BusTimeVO busTime = busService.getBusTime(lineId,dirId,stopId);
+                return ResponseVOUtils.generateSuccess(busTime);
+            }else{
+                return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVOUtils.generateParameterError(Constants.Msg.Error);
         }
     }
     /**

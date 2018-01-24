@@ -49,7 +49,7 @@ public class BusServiceImpl implements BusService {
     }
 
     @Override
-    public BusTimeVO getBusTime(String lineId, String dirId, String stopId) {
+    public BusTimeVO getBusTime(String lineId, String dirId, String stopId) throws Exception {
         // http://www.bjbus.com/home/ajax_rtbus_data.php?act=busTime&selBLine=10&selBDir=5192287798525865037&selBStop=6
         HashMap<String, String> params = new HashMap<>();
         params.put("act","busTime");
@@ -103,7 +103,7 @@ public class BusServiceImpl implements BusService {
             stopVO = new BusTimeStopVO(next.text());
             stopList.add(stopVO);
         }
-        //获取到站信息
+        //获取即将到站信息
         Elements buscE = ul.get(0).getElementsByClass("busc");
         Iterator<Element> ito = buscE.iterator();
         while (ito.hasNext()){
@@ -111,16 +111,16 @@ public class BusServiceImpl implements BusService {
             Element parent = ele.parent();
             String idStr = parent.id();
             String id = StringUtils.substring(idStr, 0, idStr.length() - 1);
-            stopList.get(Integer.parseInt(id)-1).setArrived(true);
+            stopList.get(Integer.parseInt(id)-1).setArriving(true);
         }
-        //获取即将到站信息
+        //获取到站信息
         Elements bussE = ul.get(0).getElementsByClass("buss");
         Iterator<Element> it = bussE.iterator();
         while (it.hasNext()){
             Element ele = it.next();
             Element parent = ele.parent();
             String id = parent.id();
-            stopList.get(Integer.parseInt(id)-1).setArriving(true);
+            stopList.get(Integer.parseInt(id)-1).setArrived(true);
         }
         busTimeVO.setStopList(stopList);
         return busTimeVO;
