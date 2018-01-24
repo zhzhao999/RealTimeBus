@@ -5,6 +5,9 @@ package top.zhzhao.web.model.bus.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * 给前端的 实时公交对象
  *@author zhzhao
@@ -12,20 +15,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class BusTimeVO {
     /** 当前站点 */
-    private String currentStop;
+    private String              currentStop;
     /** 运营时间 */
-    private String operationTime;
+    private String              operationTime;
     /** 计价方式 */
-    private String priceType;
+    private String              priceType;
     /** 分公司名称 */
     @JsonIgnore
-    private String branchCompany;
+    private String              branchCompany;
     /** 最近还有几站 */
-    private String lastStop;
+    private String              lastStop;
     /** 最近距离 公里 */
-    private double lastDistance;
+    private String              lastDistance;
     /** 预计到达时间 */
-    private String expectedTime;
+    private String              expectedTime;
+    /** 站点集合 */
+    private List<BusTimeStopVO> stopList;
 
     public String getCurrentStop() {
         return currentStop;
@@ -67,11 +72,11 @@ public class BusTimeVO {
         this.lastStop = lastStop;
     }
 
-    public double getLastDistance() {
+    public String getLastDistance() {
         return lastDistance;
     }
 
-    public void setLastDistance(double lastDistance) {
+    public void setLastDistance(String lastDistance) {
         this.lastDistance = lastDistance;
     }
 
@@ -81,5 +86,13 @@ public class BusTimeVO {
 
     public void setExpectedTime(String expectedTime) {
         this.expectedTime = expectedTime;
+    }
+
+    public List<BusTimeStopVO> getStopList() {
+        return stopList;
+    }
+
+    public void setStopList(List<BusTimeStopVO> stopList) {
+        this.stopList = stopList;
     }
 }

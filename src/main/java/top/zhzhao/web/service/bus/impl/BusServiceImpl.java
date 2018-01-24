@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import top.zhzhao.web.model.bus.vo.BusTimeHtmlVO;
+import top.zhzhao.web.model.bus.vo.BusTimeStopVO;
 import top.zhzhao.web.model.bus.vo.BusTimeVO;
 import top.zhzhao.web.model.bus.vo.LineDirVO;
 import top.zhzhao.web.service.bus.BusService;
@@ -18,10 +19,7 @@ import top.zhzhao.web.utils.Constants;
 import top.zhzhao.web.utils.HttpClientUtil;
 import top.zhzhao.web.utils.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -63,6 +61,8 @@ public class BusServiceImpl implements BusService {
         BusTimeHtmlVO htmlVO = gson.fromJson(jsonStr, BusTimeHtmlVO.class);
         String html = htmlVO.getHtml();
         Document document = Jsoup.parse(html);
+
+        //获取提示信息
         Elements elements = document.getElementsByClass("inner");
         Elements article = elements.get(0).select("article");
         Elements p = article.get(0).select("p");
@@ -83,12 +83,46 @@ public class BusServiceImpl implements BusService {
             }else{
                 String[] split = StringUtils.split(text.trim(), " ");
                 busTimeVO.setLastStop(split[1]);
-                busTimeVO.setLastDistance(Double.parseDouble(split[3]));
-                busTimeVO.setExpectedTime(split[5]);
+                String[] instance = StringUtils.split(split[4], "，");
+                busTimeVO.setLastDistance(split[3]+instance[0]);
+                busTimeVO.setExpectedTime(split[5]+split[6]);
             }
             i++;
-            System.out.println(text);
+//            System.out.println(text);
         }
+
+        //获取站点信息
+        Elements stopEles = document.getElementsByClass("inquiry_main");
+        Elements ul = stopEles.get(0).select("ul");
+        Elements span = ul.get(0).select("span");
+        Iterator<Element> iter = span.iterator();
+        ArrayList<BusTimeStopVO> stopList = new ArrayList<>();
+        BusTimeStopVO stopVO = null;
+        while (iter.hasNext()){
+            Element next = iter.next();
+            stopVO = new BusTimeStopVO(next.text());
+            stopList.add(stopVO);
+        }
+        //获取到站信息
+        Elements buscE = ul.get(0).getElementsByClass("busc");
+        Iterator<Element> ito = buscE.iterator();
+        while (ito.hasNext()){
+            Element ele = ito.next();
+            Element parent = ele.parent();
+            String idStr = parent.id();
+            String id = StringUtils.substring(idStr, 0, idStr.length() - 1);
+            stopList.get(Integer.parseInt(id)-1).setArrived(true);
+        }
+        //获取即将到站信息
+        Elements bussE = ul.get(0).getElementsByClass("buss");
+        Iterator<Element> it = bussE.iterator();
+        while (it.hasNext()){
+            Element ele = it.next();
+            Element parent = ele.parent();
+            String id = parent.id();
+            stopList.get(Integer.parseInt(id)-1).setArriving(true);
+        }
+        busTimeVO.setStopList(stopList);
         return busTimeVO;
     }
 
