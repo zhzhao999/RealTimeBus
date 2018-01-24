@@ -229,12 +229,30 @@ URL
     "repCode": "0000",
     "repMsg": null,
     "datas": {
-        "currentStop": "北京西站",      //当前查询站点
-        "operationTime": "5:00-23:00",  //该站点运营时间
-        "priceType": "分段计价",        //计价方式
-        "lastStop": "3",                //最近车辆还有几站
-        "lastDistance": 2.5,            //最近车辆距离（公里）
-        "expectedTime": "6"             //预计到达时间（分钟）
+        "currentStop": "牛街",        //当前查询站点
+        "operationTime": "5:00-24:00",//运营时间
+        "priceType": "分段计价",       //计价方式
+        "lastStop": "2",              //最近车辆距离几站
+        "lastDistance": "1.03公里",   //最近车辆具体距离
+        "expectedTime": "3分钟",      //预计到站时间
+        "stopList": [                 //该线路所有站点
+            {
+                "stopName": "南菜园",    //站名
+                "arriving": false,      //是否有途中车辆
+                "arrived": true        //是否有到站车辆
+            },
+            {
+                "stopName": "牛街",
+                "arriving": false,
+                "arrived": false
+            },
+            ...
+            {
+                "stopName": "航天桥东",
+                "arriving": true,
+                "arrived": false
+            }
+        ]
     }
 }
 ```
