@@ -7,12 +7,11 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import jdk.nashorn.internal.ir.ReturnNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.zhzhao.web.model.bus.entity.BusLine;
 import top.zhzhao.web.model.bus.entity.BusNightLine;
+import top.zhzhao.web.model.bus.vo.BusListCO;
+import top.zhzhao.web.model.bus.vo.BusTimeCO;
 import top.zhzhao.web.model.bus.vo.BusTimeVO;
 import top.zhzhao.web.model.bus.vo.LineDirVO;
 import top.zhzhao.web.service.bus.BusLineService;
@@ -57,7 +56,8 @@ public class BusController {
      * 获取所有车辆
      */
     @PostMapping(value = "findAll")
-    public ResponseVO getAllBus(String type){
+    public ResponseVO getAllBus(@RequestBody BusListCO listCO){
+        String type = listCO.getType();
         if (StringUtils.isNotBlank(type) && type.equals("night")){
             List<BusNightLine> nightLines = nightLineService
                     .selectList(new EntityWrapper<BusNightLine>().eq("region_code", "bj"));
@@ -73,18 +73,18 @@ public class BusController {
      * 根据 车辆名称 查询 车辆列表
      */
     @PostMapping(value = "findListByName")
-    public ResponseVO findListByName(String name,String type){
-        if (StringUtils.isNotBlank(name)){
-            if (StringUtils.isNotBlank(type) && type.equals("night")){
+    public ResponseVO findListByName(@RequestBody BusListCO listCO){
+        if (StringUtils.isNotBlank(listCO.getName())){
+            if (StringUtils.isNotBlank(listCO.getType()) && listCO.getType().equals("night")){
                 EntityWrapper<BusNightLine> wrapper = new EntityWrapper<>();
                 wrapper.eq("region_code", "bj");
-                wrapper.like("line_name",name);
+                wrapper.like("line_name",listCO.getName());
                 List<BusNightLine> lineList = nightLineService.selectList(wrapper);
                 return ResponseVOUtils.generateSuccess(lineList);
             }else {
                 EntityWrapper<BusLine> wrapper = new EntityWrapper<>();
                 wrapper.eq("region_code", "bj");
-                wrapper.like("line_name",name);
+                wrapper.like("line_name",listCO.getName());
                 List<BusLine> lineList = lineService.selectList(wrapper);
                 return ResponseVOUtils.generateSuccess(lineList);
             }
@@ -95,10 +95,10 @@ public class BusController {
 
     /**
      * 根据 线路ID 查询车辆 始发站和终点站
-     * @param lineId  线路ID
      */
     @PostMapping(value = "getLineDir")
-    public ResponseVO getLineDir(String lineId){
+    public ResponseVO getLineDir(@RequestBody BusTimeCO timeCO){
+        String lineId = timeCO.getLineId();
         if (StringUtils.isNotBlank(lineId)){
             List<LineDirVO> lineDir = busService.getLineDir(lineId);
             return ResponseVOUtils.generateSuccess(lineDir);
@@ -109,11 +109,11 @@ public class BusController {
 
     /**
      * 根据 线路ID和方向 查询车辆站点
-     * @param lineId  线路ID
-     * @param dirId  始发站方向ID
      */
     @PostMapping(value = "getDirStation")
-    public ResponseVO getDirStation(String lineId,String dirId){
+    public ResponseVO getDirStation(@RequestBody BusTimeCO timeCO){
+        String lineId = timeCO.getLineId();
+        String dirId = timeCO.getDirId();
         if (StringUtils.isNotBlank(lineId) && StringUtils.isNotBlank(dirId)){
             List<LineDirVO> lineDir = busService.getDirStation(lineId,dirId);
             return ResponseVOUtils.generateSuccess(lineDir);
@@ -124,12 +124,12 @@ public class BusController {
 
     /**
      * 根据 线路ID,方向ID,站点ID 查询实时信息
-     * @param lineId  线路ID
-     * @param dirId  始发站方向ID
-     * @param stopId  站点ID
      */
     @PostMapping(value = "getBusTime")
-    public ResponseVO getBusTime(String lineId,String dirId,String stopId){
+    public ResponseVO getBusTime(@RequestBody BusTimeCO timeCO){
+        String lineId = timeCO.getLineId();
+        String dirId = timeCO.getDirId();
+        String stopId = timeCO.getStopId();
         try {
             if (StringUtils.isNotBlank(lineId) && StringUtils.isNotBlank(dirId) && StringUtils.isNotBlank(stopId)){
                 BusTimeVO busTime = busService.getBusTime(lineId,dirId,stopId);
