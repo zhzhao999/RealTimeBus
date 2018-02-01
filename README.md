@@ -314,3 +314,88 @@ URL
     }
 }
 ```
+
+#### 收藏
+
+URL
+```
+    /bus/collect
+```
+参数
+```$xslt
+    userId：用户ID
+    lineId: 线路ID 必填
+    dirId: 方向ID 必填
+    stopId: 站点ID 必填
+```
+注释
+```$xslt
+    无
+``` 
+返回:
+```
+{
+    "repCode": "0000",
+    "repMsg": null,
+    "datas": "请求成功"
+}
+```
+
+#### 取消收藏
+
+URL
+```
+    /bus/cancelCollect
+```
+参数
+```$xslt
+    collectId：收藏ID
+```
+注释
+```$xslt
+    无
+``` 
+返回:
+```
+{
+    "repCode": "0000",
+    "repMsg": null,
+    "datas": "请求成功"
+}
+```
+
+#### 收藏列表
+
+URL
+```
+    /bus/getCollectList
+```
+参数
+```$xslt
+    userId：用户ID
+```
+注释
+```$xslt
+    无
+``` 
+返回:
+```
+{
+    "repCode": "0000",
+    "repMsg": null,
+    "datas": [
+        {
+            "id": 1,
+            "userId": "1",
+            "lineId": "441",
+            "dirId": "5055313442986205423",
+            "stopId": "8",
+            "negativeDirId": "5495281241221180012",
+            "currentStop": "天鑫家园",
+            "nextStop": "华龙苑北里北门",
+            "crtTime": 1517477871000
+        },
+        ...
+    ]
+}
+```

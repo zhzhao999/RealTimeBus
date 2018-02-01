@@ -4,12 +4,19 @@
 package top.zhzhao.web.service.bus.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.zhzhao.web.mapper.bus.BusCollectMapper;
 import top.zhzhao.web.mapper.bus.BusLineMapper;
 import top.zhzhao.web.model.bus.entity.BusCollect;
 import top.zhzhao.web.model.bus.entity.BusLine;
+import top.zhzhao.web.model.bus.vo.LineDirVO;
 import top.zhzhao.web.service.bus.BusCollectService;
+import top.zhzhao.web.service.bus.BusLineService;
+import top.zhzhao.web.service.bus.BusService;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 用户收藏服务
@@ -20,10 +27,36 @@ import top.zhzhao.web.service.bus.BusCollectService;
 public class BusCollectServiceImpl extends ServiceImpl<BusCollectMapper,BusCollect>
         implements BusCollectService {
 
-    @Override
-    public BusCollect collect(String userId,String lineId, String dirId, String stopId) {
-        //TODO  用户收藏
+    @Autowired
+    private BusService busService;
 
-        return null;
+    @Override
+    public boolean collect(String userId,String lineId, String dirId, String stopId) {
+        BusCollect collect = new BusCollect();
+        collect.setUserId(userId);
+        collect.setLineId(lineId);
+        collect.setDirId(dirId);
+        collect.setStopId(stopId);
+        collect.setCrtTime(new Date());
+        //反方向ID
+        List<LineDirVO> lineDir = busService.getLineDir(lineId);
+        for (LineDirVO dirVo:lineDir) {
+            String negativeDirId = dirVo.getValue();
+            if (!negativeDirId.equals(dirId)){
+                collect.setNegativeDirId(negativeDirId);
+            }
+        }
+        //获取当前站点 和 下一站
+        List<LineDirVO> dirStationList = busService.getDirStation(lineId, dirId);
+        int currentId = Integer.parseInt(stopId);
+        LineDirVO currentDirVO = dirStationList.get(currentId - 1);
+        collect.setCurrentStop(currentDirVO.getName());
+        if (dirStationList.size() != currentId){
+            LineDirVO nextDirVO = dirStationList.get(currentId);
+            collect.setNextStop(nextDirVO.getName());
+        }
+
+        //保存数据
+        return this.insert(collect);
     }
 }

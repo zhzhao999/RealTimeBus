@@ -143,10 +143,11 @@ public class BusController {
 
     /**
      * 获取用户收藏列表
-     * @param userId 用户ID
+     * @param collectCO 包含用户userId的实体
      */
     @PostMapping(value = "getCollectList")
-    public ResponseVO getCollectList(@RequestBody String userId){
+    public ResponseVO getCollectList(@RequestBody BusCollectCO collectCO){
+        String userId = collectCO.getUserId();
         if (StringUtils.isBlank(userId)){
             return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
         }
@@ -155,6 +156,10 @@ public class BusController {
         return ResponseVOUtils.generateSuccess(collectList);
     }
 
+    /**
+     * 收藏
+     * @param collectCO 收藏实体
+     */
     @PostMapping(value = "collect")
     public ResponseVO collect(@RequestBody BusCollectCO collectCO){
         String userId = collectCO.getUserId();
@@ -163,8 +168,12 @@ public class BusController {
         String stopId = collectCO.getStopId();
         try {
             if (StringUtils.isNotBlank(userId) && StringUtils.isNotBlank(lineId) && StringUtils.isNotBlank(dirId) && StringUtils.isNotBlank(stopId)){
-                BusCollect collect = collectService.collect(userId,lineId,dirId,stopId);
-                return ResponseVOUtils.generateSuccess(collect);
+                boolean flag = collectService.collect(userId,lineId,dirId,stopId);
+                if (flag){
+                    return ResponseVOUtils.generateSuccess(Constants.Msg.Success);
+                }else {
+                    return ResponseVOUtils.generateSuccess(Constants.Msg.Error);
+                }
             }else{
                 return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
             }
@@ -174,8 +183,13 @@ public class BusController {
         }
     }
 
+    /**
+     * 取消收藏
+     * @param collectCO 包含collectId的实体
+     */
     @PostMapping(value = "cancelCollect")
-    public ResponseVO cancelCollect(@RequestBody String collectId){
+    public ResponseVO cancelCollect(@RequestBody BusCollectCO collectCO){
+        String collectId = collectCO.getCollectId();
         if (StringUtils.isBlank(collectId)){
             return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
         }

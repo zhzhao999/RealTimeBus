@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class BusCollect extends BusSuperEntity<BusCollect> {
 
-    /** 用户实体 */
+    /** 用户ID */
     private String userId;
     /** 线路的key */
     private String lineId;
