@@ -13,9 +13,6 @@ public class BusSuperEntity<T extends Model> extends Model<T> {
 
     /** 主键ID */
     private Long id;
-    /** 数据状态 normal:正常 invalid:失效*/
-    @JsonIgnore
-    private String state;
 
     public Long getId() {
         return this.id;
@@ -23,14 +20,6 @@ public class BusSuperEntity<T extends Model> extends Model<T> {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 
     @Override

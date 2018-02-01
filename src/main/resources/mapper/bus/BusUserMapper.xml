@@ -3,22 +3,4 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.zhzhao.web.mapper.bus.BusUserMapper">
 
-    <resultMap id="baseResult" type="BusUser">
-        <id column="id" jdbcType="INTEGER" property="id"  />
-        <result column="name" jdbcType="VARCHAR" property="name" />
-        <result column="crt_time" jdbcType="TIMESTAMP" property="crtTime" />
-        <result column="mod_time" jdbcType="TIMESTAMP" property="modTime" />
-        <result column="state" jdbcType="VARCHAR" property="state" />
-    </resultMap>
-
-    <select id="findAll" resultMap="baseResult">
-        SELECT * FROM bus_user
-    </select>
-
-    <select id="findMyPage" resultType="BusUser">
-        SELECT * FROM bus_user
-        <where>
-            ${ew.sqlSegment}
-        </where>
-    </select>
 </mapper>

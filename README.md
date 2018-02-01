@@ -10,7 +10,7 @@ zhzhao.top的后台代码
 {
     "repCode": "0000",
     "repMsg": null,
-    "datas": "该字段为成功后返回信息，可能是空，或对象，或数组"
+    "datas": "该字段为成功后返回信息，可能是空，或对象，或数组,或提示信息"
 }
 ```
 错误：
@@ -38,7 +38,7 @@ zhzhao.top的后台代码
 
 ### 接口
 
-#### 1.测试接口
+#### 测试接口
 
 URL
 ```$xslt
@@ -60,8 +60,64 @@ URL
     "datas": "请求成功"
 }
 ```
+#### 登录
 
-#### 2.获取所有车辆
+URL
+```$xslt
+    /bus/user/login
+```
+参数
+```$xslt
+    code: 微信登陆接口返回
+```
+注释
+```$xslt
+    小程序端需要先调用wx.login，获取code.
+    调用该接口成功后,需要继续调用update接口,更新用户信息
+```
+[小程序微信登录API](https://mp.weixin.qq.com/debug/wxadoc/dev/api/api-login.html#wxloginobject)
+
+返回
+```
+{
+    "repCode": "0000",
+    "repMsg": null,
+    "datas": {
+        id:"用户ID"
+    }
+}
+```
+#### 更新用户信息
+
+URL
+```$xslt
+    /bus/user/update
+```
+参数
+```$xslt
+    id: 必填.login成功后服务器返回的用户ID
+    nickName:非必填,微信昵称;
+    avatarUrl:非必填,头像
+    gender:非必填,性别1:男 2:女 3:未知
+    city:非必填,城市
+    province:非必填,省份
+    country:非必填,国家
+    language:非必填,语言,zh_CN为简体中文
+```
+注释
+```$xslt
+    五
+```
+返回
+```
+{
+    "repCode": "0000",
+    "repMsg": null,
+    "datas": "数据更新成功"
+}
+```
+
+#### 获取所有车辆
 
 URL
 ```$xslt
@@ -96,7 +152,7 @@ URL
 }
 ```
 
-####  3.根据车辆名称 查询车辆列表
+####  根据车辆名称 查询车辆列表
 
 URL
 ```
@@ -132,7 +188,7 @@ URL
      ]
 }
 ```
-#### 4.根据线路ID 查询车辆的始发站和终点站
+#### 根据线路ID 查询车辆的始发站和终点站
 
 URL
 ```
@@ -163,7 +219,7 @@ URL
     ]
 }
 ```
-#### 5.根据线路ID和方向 查询车辆所有站点
+#### 根据线路ID和方向 查询车辆所有站点
 
 URL
 ```
@@ -209,7 +265,7 @@ URL
 }
 ```
 
-#### 6.根据线路ID,方向ID,站点ID 查询实时信息
+#### 根据线路ID,方向ID,站点ID 查询实时信息
 
 URL
 ```

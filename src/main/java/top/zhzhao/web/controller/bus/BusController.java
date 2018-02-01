@@ -4,9 +4,7 @@
 package top.zhzhao.web.controller.bus;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import jdk.nashorn.internal.ir.ReturnNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import top.zhzhao.web.model.bus.entity.BusLine;
 import top.zhzhao.web.model.bus.entity.BusNightLine;
@@ -23,7 +21,6 @@ import top.zhzhao.web.utils.response.ResponseVO;
 import top.zhzhao.web.utils.response.ResponseVOUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +46,7 @@ public class BusController {
      */
     @GetMapping(value = "test")
     public ResponseVO test(){
-        return ResponseVOUtils.generateSuccess(Constants.Msg.SUCCESS);
+        return ResponseVOUtils.generateSuccess(Constants.Msg.Success);
     }
 
     /**

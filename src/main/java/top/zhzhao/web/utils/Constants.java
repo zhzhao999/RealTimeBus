@@ -7,39 +7,6 @@ package top.zhzhao.web.utils;
 public interface Constants {
 
 	/**
-	 * 用户状态
-	 * @author zhzhao
-	 */
-	public interface UserStatus {
-		String DIC_CODE = "USER_STAT";
-		/**
-		 * 启用
-		 */
-		String ENABLED = "USER_ENABLED";
-		/**
-		 * 停用
-		 */
-		String DISABLED = "USER_DISABLED";
-		/**
-		 * 过期
-		 */
-		String EXPIRED = "USER_EXPIRED";
-		/**
-		 * 离职(删除)
-		 */
-		String DIMISSION = "USER_DIMISSION";
-
-	}
-
-	/**
-	 * 日志动作类型.
-	 * @author zhzhao
-	 */
-	public interface ActionType {
-		String LOGIN = "ACT_LOGIN";// 用户登录
-	}
-
-	/**
 	 * 北京公交-数据接口地址
 	 * @author zhzhao
 	 */
@@ -49,12 +16,28 @@ public interface Constants {
 		String Dir = "http://www.bjbus.com/home/ajax_rtbus_data.php";
 	}
 
+	/**
+	 * 微信相关
+	 * @author zhzhao
+	 */
+	public interface WeChat{
+		String appId = "wx45b001a66bab8445";
+		String appSecret = "8546fb452ca867f02aef196141015dd4";
+		String LoginUrl = "https://api.weixin.qq.com/sns/jscode2session";
+	}
+
+	/**
+	 * 提示信息
+	 * @author zhzhao
+	 */
 	public interface Msg {
-		String SUCCESS = "请求成功";
-		String Error = "服务器走丢了，请稍后再试";
-		String ParamError = "参数不合法";
+		String LoginSuccess  = "登录成功";
+		String LoginError    = "登录失败，请稍后再试";
+		String Success       = "请求成功";
+		String Error         = "服务器走丢了，请稍后再试";
+		String ParamError    = "参数不合法";
 		String UpdateSuccess = "数据更新成功";
-		String UpdateError = "数据更新失败";
+		String UpdateError   = "数据更新失败";
 	}
 	
 }
