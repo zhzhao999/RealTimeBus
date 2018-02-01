@@ -12,3 +12,9 @@ spring:
 server:
   context-path: /
   port: 9999
+
+logging:
+  pattern:
+    level: ERROR
+  path: /usr/java/www/zhzhao/log
+
