@@ -6,12 +6,11 @@ package top.zhzhao.web.controller.bus;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import top.zhzhao.web.model.bus.entity.BusCollect;
 import top.zhzhao.web.model.bus.entity.BusLine;
 import top.zhzhao.web.model.bus.entity.BusNightLine;
-import top.zhzhao.web.model.bus.vo.BusListCO;
-import top.zhzhao.web.model.bus.vo.BusTimeCO;
-import top.zhzhao.web.model.bus.vo.BusTimeVO;
-import top.zhzhao.web.model.bus.vo.LineDirVO;
+import top.zhzhao.web.model.bus.vo.*;
+import top.zhzhao.web.service.bus.BusCollectService;
 import top.zhzhao.web.service.bus.BusLineService;
 import top.zhzhao.web.service.bus.BusNightLineService;
 import top.zhzhao.web.service.bus.BusService;
@@ -41,6 +40,8 @@ public class BusController {
     @Autowired
     private BusNightLineService nightLineService;
 
+    @Autowired
+    private BusCollectService collectService;
     /**
      * 测试接口
      */
@@ -139,6 +140,53 @@ public class BusController {
             return ResponseVOUtils.generateParameterError(Constants.Msg.Error);
         }
     }
+
+    /**
+     * 获取用户收藏列表
+     * @param userId 用户ID
+     */
+    @PostMapping(value = "getCollectList")
+    public ResponseVO getCollectList(@RequestBody String userId){
+        if (StringUtils.isBlank(userId)){
+            return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
+        }
+        List<BusCollect> collectList = collectService
+                .selectList(new EntityWrapper<BusCollect>().eq("user_id", userId));
+        return ResponseVOUtils.generateSuccess(collectList);
+    }
+
+    @PostMapping(value = "collect")
+    public ResponseVO collect(@RequestBody BusCollectCO collectCO){
+        String userId = collectCO.getUserId();
+        String lineId = collectCO.getLineId();
+        String dirId = collectCO.getDirId();
+        String stopId = collectCO.getStopId();
+        try {
+            if (StringUtils.isNotBlank(userId) && StringUtils.isNotBlank(lineId) && StringUtils.isNotBlank(dirId) && StringUtils.isNotBlank(stopId)){
+                BusCollect collect = collectService.collect(userId,lineId,dirId,stopId);
+                return ResponseVOUtils.generateSuccess(collect);
+            }else{
+                return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVOUtils.generateParameterError(Constants.Msg.Error);
+        }
+    }
+
+    @PostMapping(value = "cancelCollect")
+    public ResponseVO cancelCollect(@RequestBody String collectId){
+        if (StringUtils.isBlank(collectId)){
+            return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
+        }
+        boolean flag = collectService.deleteById(collectId);
+        if (flag){
+            return ResponseVOUtils.generateSuccess(Constants.Msg.Success);
+        }
+        return ResponseVOUtils.generateCommonError(Constants.Msg.Error);
+    }
+
+
     /**
      * 更新 白班 数据
      */

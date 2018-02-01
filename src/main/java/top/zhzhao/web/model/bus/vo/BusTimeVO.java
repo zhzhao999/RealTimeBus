@@ -29,6 +29,8 @@ public class BusTimeVO {
     private String              lastDistance;
     /** 预计到达时间 */
     private String              expectedTime;
+    /** 有时候 返回数据无规律, 这时会用该信息代替 几站 几公里 到达时间 */
+    private String              otherMsg;
     /** 站点集合 */
     private List<BusTimeStopVO> stopList;
 
@@ -94,5 +96,13 @@ public class BusTimeVO {
 
     public void setStopList(List<BusTimeStopVO> stopList) {
         this.stopList = stopList;
+    }
+
+    public String getOtherMsg() {
+        return otherMsg;
+    }
+
+    public void setOtherMsg(String otherMsg) {
+        this.otherMsg = otherMsg;
     }
 }

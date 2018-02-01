@@ -3,7 +3,6 @@
  */
 package top.zhzhao.web.service.bus.impl;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.google.gson.Gson;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,7 +18,10 @@ import top.zhzhao.web.utils.Constants;
 import top.zhzhao.web.utils.HttpClientUtil;
 import top.zhzhao.web.utils.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -81,11 +83,16 @@ public class BusServiceImpl implements BusService {
                     busTimeVO.setBranchCompany(split[4]);
                 }
             }else{
-                String[] split = StringUtils.split(text.trim(), " ");
-                busTimeVO.setLastStop(split[1]);
-                String[] instance = StringUtils.split(split[4], "，");
-                busTimeVO.setLastDistance(split[3]+instance[0]);
-                busTimeVO.setExpectedTime(split[5]+split[6]);
+                try {
+                    String[] split = StringUtils.split(text.trim(), " ");
+                    busTimeVO.setLastStop(split[1]);
+                    String[] instance = StringUtils.split(split[4], "，");
+                    busTimeVO.setLastDistance(split[3]+instance[0]);
+                    busTimeVO.setExpectedTime(split[5]+split[6]);
+                } catch (Exception e) {
+                    busTimeVO.setOtherMsg(text.trim());
+                    e.printStackTrace();
+                }
             }
             i++;
 //            System.out.println(text);
