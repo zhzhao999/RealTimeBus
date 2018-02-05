@@ -24,6 +24,8 @@ public interface Constants {
 		String appId = "wx45b001a66bab8445";
 		String appSecret = "8546fb452ca867f02aef196141015dd4";
 		String LoginUrl = "https://api.weixin.qq.com/sns/jscode2session";
+
+		String errmsg = "code无效";
 	}
 
 	/**
