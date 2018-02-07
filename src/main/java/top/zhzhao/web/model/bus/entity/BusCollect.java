@@ -24,6 +24,8 @@ public class BusCollect extends BusSuperEntity<BusCollect> {
     private String stopId;
     /** 反方向ID */
     private String negativeDirId;
+    /** 反方向站点ID */
+    private String negativeStopId;
     /** 站点名称 */
     private String currentStop;
     /** 下一站名称 */
@@ -78,6 +80,14 @@ public class BusCollect extends BusSuperEntity<BusCollect> {
 
     public void setNegativeDirId(String negativeDirId) {
         this.negativeDirId = negativeDirId;
+    }
+
+    public String getNegativeStopId() {
+        return negativeStopId;
+    }
+
+    public void setNegativeStopId(String negativeStopId) {
+        this.negativeStopId = negativeStopId;
     }
 
     public String getNextStop() {

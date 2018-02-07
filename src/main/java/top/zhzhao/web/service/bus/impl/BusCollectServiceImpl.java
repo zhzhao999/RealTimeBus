@@ -14,6 +14,7 @@ import top.zhzhao.web.model.bus.vo.LineDirVO;
 import top.zhzhao.web.service.bus.BusCollectService;
 import top.zhzhao.web.service.bus.BusLineService;
 import top.zhzhao.web.service.bus.BusService;
+import top.zhzhao.web.utils.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -50,6 +51,8 @@ public class BusCollectServiceImpl extends ServiceImpl<BusCollectMapper,BusColle
         List<LineDirVO> dirStationList = busService.getDirStation(lineId, dirId);
         int currentId = Integer.parseInt(stopId);
         LineDirVO currentDirVO = dirStationList.get(currentId - 1);
+        int negativeStopId = dirStationList.size()+1 - currentId;
+        collect.setNegativeStopId(negativeStopId+"");
         collect.setCurrentStop(currentDirVO.getName());
         if (dirStationList.size() != currentId){
             LineDirVO nextDirVO = dirStationList.get(currentId);
