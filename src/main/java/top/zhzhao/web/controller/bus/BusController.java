@@ -15,6 +15,7 @@ import top.zhzhao.web.service.bus.BusLineService;
 import top.zhzhao.web.service.bus.BusNightLineService;
 import top.zhzhao.web.service.bus.BusService;
 import top.zhzhao.web.utils.Constants;
+import top.zhzhao.web.utils.LineOrPlaceUtils;
 import top.zhzhao.web.utils.StringUtils;
 import top.zhzhao.web.utils.response.ResponseVO;
 import top.zhzhao.web.utils.response.ResponseVOUtils;
@@ -72,20 +73,26 @@ public class BusController {
      */
     @PostMapping(value = "findListByName")
     public ResponseVO findListByName(@RequestBody BusListCO listCO){
-        if (StringUtils.isNotBlank(listCO.getName())){
-            if (StringUtils.isNotBlank(listCO.getType()) && listCO.getType().equals("night")){
-                EntityWrapper<BusNightLine> wrapper = new EntityWrapper<>();
-                wrapper.eq("region_code", "bj");
-                wrapper.like("line_name",listCO.getName());
-                List<BusNightLine> lineList = nightLineService.selectList(wrapper);
-                return ResponseVOUtils.generateSuccess(lineList);
+        String name = listCO.getName();
+        if (StringUtils.isNotBlank(name)){
+            if (LineOrPlaceUtils.isLine(name)){
+                if (StringUtils.isNotBlank(listCO.getType()) && listCO.getType().equals("night")){
+                    EntityWrapper<BusNightLine> wrapper = new EntityWrapper<>();
+                    wrapper.eq("region_code", "bj");
+                    wrapper.like("line_name",name);
+                    List<BusNightLine> lineList = nightLineService.selectList(wrapper);
+                    return ResponseVOUtils.generateSuccess(lineList);
+                }else {
+                    EntityWrapper<BusLine> wrapper = new EntityWrapper<>();
+                    wrapper.eq("region_code", "bj");
+                    wrapper.like("line_name",name);
+                    List<BusLine> lineList = lineService.selectList(wrapper);
+                    return ResponseVOUtils.generateSuccess(lineList);
+                }
             }else {
-                EntityWrapper<BusLine> wrapper = new EntityWrapper<>();
-                wrapper.eq("region_code", "bj");
-                wrapper.like("line_name",listCO.getName());
-                List<BusLine> lineList = lineService.selectList(wrapper);
-                return ResponseVOUtils.generateSuccess(lineList);
+                return ResponseVOUtils.generateCommonError("暂不支持地点查询");
             }
+
         }else {
             return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
         }
