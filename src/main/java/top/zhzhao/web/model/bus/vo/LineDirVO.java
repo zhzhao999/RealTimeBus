@@ -4,7 +4,7 @@
 package top.zhzhao.web.model.bus.vo;
 
 /**
- * 线路方向
+ * 线路方向 和 站点 通用VO
  *@author zhzhao
  *@version $ Id: LineDirVO.java,V 0.1 2018/1/23 14:24 zhzhao Exp $
  */

@@ -264,7 +264,47 @@ URL
     ]
 }
 ```
+#### 根据线路ID 查询默认方向上 车辆所有站点
 
+URL
+```
+    /bus/getDefaultDirStation
+```
+参数
+```$xslt
+    lineId: 线路ID 必填
+```
+注释
+```$xslt
+    无
+``` 
+返回:
+```
+{
+    "repCode": "0000",
+    "repMsg": null,
+    "datas": {
+        "dirId": "5055313442986205423", //当前方向ID
+        "dirName": "地铁天通苑北站-地铁龙泽站",//当前始发终点站
+        "negativeDirId": "5495281241221180012",//反方向ID
+        "stations": [
+            {
+                "name": "地铁天通苑北站",
+                "value": "1"
+            },
+            {
+                "name": "地铁天通苑北站南",
+                "value": "2"
+            },
+            {
+                "name": "天通西苑三区北门",
+                "value": "3"
+            },
+            ...
+        ]
+    }
+}
+```
 #### 根据线路ID,方向ID,站点ID 查询实时信息
 
 URL

@@ -9,10 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-import top.zhzhao.web.model.bus.vo.BusTimeHtmlVO;
-import top.zhzhao.web.model.bus.vo.BusTimeStopVO;
-import top.zhzhao.web.model.bus.vo.BusTimeVO;
-import top.zhzhao.web.model.bus.vo.LineDirVO;
+import top.zhzhao.web.model.bus.vo.*;
 import top.zhzhao.web.service.bus.BusService;
 import top.zhzhao.web.utils.Constants;
 import top.zhzhao.web.utils.HttpClientUtil;
@@ -48,6 +45,25 @@ public class BusServiceImpl implements BusService {
         params.put("selBLine",lineId);
         params.put("selBDir",dirId);
         return this.getValue(params);
+    }
+
+    @Override
+    public LineStationDefaultVO getDefaultDirStation(String lineId) {
+        LineStationDefaultVO defaultVO = null;
+        List<LineDirVO> lineDirs = this.getLineDir(lineId);
+        if (lineDirs != null && lineDirs.size() >0){
+            String dirId = lineDirs.get(0).getValue();
+            String name = lineDirs.get(0).getName();
+            String dirName = name.substring(name.indexOf("(") + 1, name.indexOf(")"));
+            String negativeDirId = lineDirs.get(1).getValue();
+            List<LineDirVO> stations = this.getDirStation(lineId, dirId);
+            defaultVO = new LineStationDefaultVO();
+            defaultVO.setDirId(dirId);
+            defaultVO.setDirName(dirName);
+            defaultVO.setNegativeDirId(negativeDirId);
+            defaultVO.setStations(stations);
+        }
+        return defaultVO;
     }
 
     @Override

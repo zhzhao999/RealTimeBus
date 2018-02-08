@@ -128,6 +128,22 @@ public class BusController {
     }
 
     /**
+     * 根据 线路ID 获取默认的 车辆站点
+     * @param timeCO
+     * @return
+     */
+    @PostMapping(value = "getDefaultDirStation")
+    public ResponseVO getDefaultDirStation(@RequestBody BusTimeCO timeCO){
+        String lineId = timeCO.getLineId();
+        if (StringUtils.isNotBlank(lineId)){
+            LineStationDefaultVO defaultVO = busService.getDefaultDirStation(lineId);
+            return ResponseVOUtils.generateSuccess(defaultVO);
+        }else{
+            return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
+        }
+    }
+
+    /**
      * 根据 线路ID,方向ID,站点ID 查询实时信息
      */
     @PostMapping(value = "getBusTime")
