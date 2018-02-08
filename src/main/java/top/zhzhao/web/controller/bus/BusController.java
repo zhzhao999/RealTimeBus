@@ -113,6 +113,20 @@ public class BusController {
     }
 
     /**
+     * 根据 线路ID 查询车辆 始发站和终点站
+     */
+    @PostMapping(value = "getDefaultLineDir")
+    public ResponseVO getDefaultLineDir(@RequestBody BusTimeCO timeCO){
+        String lineId = timeCO.getLineId();
+        if (StringUtils.isNotBlank(lineId)){
+            LineDefaultDirVO defaultLineDir = busService.getDefaultLineDir(lineId);
+            return ResponseVOUtils.generateSuccess(defaultLineDir);
+        }else{
+            return ResponseVOUtils.generateParameterError(Constants.Msg.ParamError);
+        }
+    }
+
+    /**
      * 根据 线路ID和方向 查询车辆站点
      */
     @PostMapping(value = "getDirStation")

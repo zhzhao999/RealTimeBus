@@ -48,6 +48,26 @@ public class BusServiceImpl implements BusService {
     }
 
     @Override
+    public LineDefaultDirVO getDefaultLineDir(String lineId) {
+        LineDefaultDirVO defaultVO = null;
+        List<LineDirVO> lineDirs = this.getLineDir(lineId);
+        if (lineDirs != null && lineDirs.size() >0){
+            String dirId = lineDirs.get(0).getValue();
+            String name = lineDirs.get(0).getName();
+            String dirName = name.substring(name.indexOf("(") + 1, name.indexOf(")"));
+            String negativeDirId = lineDirs.get(1).getValue();
+            String negativeName = lineDirs.get(1).getName();
+            String negativeDirName = negativeName.substring(negativeName.indexOf("(") + 1, negativeName.indexOf(")"));
+            defaultVO = new LineDefaultDirVO();
+            defaultVO.setDirId(dirId);
+            defaultVO.setDirName(dirName);
+            defaultVO.setNegativeDirId(negativeDirId);
+            defaultVO.setNegativeDirName(negativeDirName);
+        }
+        return defaultVO;
+    }
+
+    @Override
     public LineStationDefaultVO getDefaultDirStation(String lineId) {
         LineStationDefaultVO defaultVO = null;
         List<LineDirVO> lineDirs = this.getLineDir(lineId);
@@ -68,6 +88,18 @@ public class BusServiceImpl implements BusService {
 
     @Override
     public BusTimeVO getBusTime(String lineId, String dirId, String stopId) throws Exception {
+        BusTimeVO busTimeVO = new BusTimeVO();
+        busTimeVO.setLineId(lineId);
+        busTimeVO.setDirId(dirId);
+        busTimeVO.setStopId(stopId);
+        List<LineDirVO> lineDirs = this.getLineDir(lineId);
+        if (lineDirs != null && lineDirs.size() >0){
+            for (LineDirVO dirVo:lineDirs) {
+                if (!dirVo.getValue().equals(dirId)){
+                    busTimeVO.setNegativeDirId(dirVo.getValue());
+                }
+            }
+        }
         // http://www.bjbus.com/home/ajax_rtbus_data.php?act=busTime&selBLine=10&selBDir=5192287798525865037&selBStop=6
         HashMap<String, String> params = new HashMap<>();
         params.put("act","busTime");
@@ -85,7 +117,7 @@ public class BusServiceImpl implements BusService {
         Elements article = elements.get(0).select("article");
         Elements p = article.get(0).select("p");
         Iterator<Element> iterator = p.iterator();
-        BusTimeVO busTimeVO = new BusTimeVO();
+
         int i = 0;
         while (iterator.hasNext()){
             Element ele = iterator.next();
@@ -146,6 +178,7 @@ public class BusServiceImpl implements BusService {
             stopList.get(Integer.parseInt(id)-1).setArrived(true);
         }
         busTimeVO.setStopList(stopList);
+        busTimeVO.setNegativeStopId(stopList.size() + 1 - Integer.parseInt(stopId)+"");
         return busTimeVO;
     }
 

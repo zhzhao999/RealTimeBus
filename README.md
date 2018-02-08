@@ -188,7 +188,7 @@ URL
      ]
 }
 ```
-#### 根据线路ID 查询车辆的始发站和终点站
+#### 根据线路ID 查询车辆的始发站和终点站 返回数组
 
 URL
 ```
@@ -219,6 +219,35 @@ URL
     ]
 }
 ```
+
+#### 根据线路ID 查询车辆的始发站和终点站 返回对象
+
+URL
+```
+    /bus/getDefaultLineDir
+```
+参数
+```$xslt
+    lineId: 线路ID 必填
+```
+注释
+```$xslt
+    无
+``` 
+返回:
+```
+{
+    "repCode": "0000",
+    "repMsg": null,
+    "datas": {
+        "dirId": "5055313442986205423",
+        "dirName": "地铁天通苑北站-地铁龙泽站",
+        "negativeDirId": "5495281241221180012",
+        "negativeDirName": "地铁龙泽站-地铁天通苑北站"
+    }
+}
+```
+
 #### 根据线路ID和方向 查询车辆所有站点
 
 URL
@@ -327,6 +356,11 @@ URL
     "repCode": "0000",
     "repMsg": null,
     "datas": {
+        "lineId": "441", //当前线路
+        "dirId": "5055313442986205423",//当前方向Id
+        "stopId": "8", //当前站点Id
+        "negativeDirId": "5495281241221180012",//反方向ID
+        "negativeStopId": "13",//反方向站点Id
         "currentStop": "牛街",        //当前查询站点
         "operationTime": "5:00-24:00",//运营时间
         "priceType": "分段计价",       //计价方式
