@@ -10,6 +10,8 @@ package top.zhzhao.web.model.bus.vo;
  */
 public class BusTimeStopVO {
 
+    /** 站点ID */
+    private String stopId;
     /** 站点名称 */
     private String stopName;
     /** 是否有途中车辆 */
@@ -20,8 +22,17 @@ public class BusTimeStopVO {
     public BusTimeStopVO() {
     }
 
-    public BusTimeStopVO(String stopName) {
+    public BusTimeStopVO(String stopName,String stopId) {
         this.stopName = stopName;
+        this.stopId = stopId;
+    }
+
+    public String getStopId() {
+        return stopId;
+    }
+
+    public void setStopId(String stopId) {
+        this.stopId = stopId;
     }
 
     public String getStopName() {

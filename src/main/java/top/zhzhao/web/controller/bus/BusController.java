@@ -21,6 +21,7 @@ import top.zhzhao.web.utils.response.ResponseVO;
 import top.zhzhao.web.utils.response.ResponseVOUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -87,7 +88,20 @@ public class BusController {
                     wrapper.eq("region_code", "bj");
                     wrapper.like("line_name",name);
                     List<BusLine> lineList = lineService.selectList(wrapper);
-                    return ResponseVOUtils.generateSuccess(lineList);
+                    ArrayList<BusLineVO> busLineVOS = new ArrayList<>();
+                    BusLineVO busLineVO = null;
+                    if (lineList != null && lineList.size() > 0){
+                        for (BusLine bLine:lineList) {
+                            busLineVO = new BusLineVO();
+                            String lineName = bLine.getLineName();
+                            List<LineDirVO> lineDir = busService.getLineDir(lineName);
+                            busLineVO.setLineName(lineName);
+                            busLineVO.setDefaultDirId(lineDir.get(0).getValue());
+                            busLineVOS.add(busLineVO);
+                        }
+                    }
+
+                    return ResponseVOUtils.generateSuccess(busLineVOS);
                 }
             }else {
                 return ResponseVOUtils.generateCommonError("暂不支持地点查询");

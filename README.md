@@ -175,15 +175,8 @@ URL
     "repMsg": null,
     "datas": [
         {
-         "lineKey": "1", //线路ID
-         "lineName": "1", //线路名称
-         "regionCode": "bj" //地区编码
-         },
-         {
-             "lineKey": "2",
-             "lineName": "2",
-             "regionCode": "bj"
-         },
+         "lineName": "441", //线路名称
+         "defaultDirId": "4615109382646459114" //默认方向ID
          ...
      ]
 }
@@ -356,6 +349,7 @@ URL
     "repCode": "0000",
     "repMsg": null,
     "datas": {
+        "startEndStation": "地铁天通苑北站-地铁龙泽站",
         "lineId": "441", //当前线路
         "dirId": "5055313442986205423",//当前方向Id
         "stopId": "8", //当前站点Id
@@ -369,17 +363,19 @@ URL
         "expectedTime": "3分钟",      //预计到站时间
         "stopList": [                 //该线路所有站点
             {
+                "stopId": "1",          //站点ID
                 "stopName": "南菜园",    //站名
                 "arriving": false,      //是否有途中车辆
                 "arrived": true        //是否有到站车辆
             },
             {
+                "stopId": "2",
                 "stopName": "牛街",
                 "arriving": false,
                 "arrived": false
             },
             ...
-            {
+            {   "stopId": "10",
                 "stopName": "航天桥东",
                 "arriving": true,
                 "arrived": false

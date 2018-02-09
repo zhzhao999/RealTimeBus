@@ -14,6 +14,8 @@ import java.util.Set;
  *@version $ Id: BusTimeVO.java,V 0.1 2018/1/23 15:51 zhzhao Exp $
  */
 public class BusTimeVO {
+    /** 始发终点站 */
+    private String startEndStation;
     /** 线路ID */
     private String lineId;
     /** 当前方向 */
@@ -43,6 +45,14 @@ public class BusTimeVO {
     private String              otherMsg;
     /** 站点集合 */
     private List<BusTimeStopVO> stopList;
+
+    public String getStartEndStation() {
+        return startEndStation;
+    }
+
+    public void setStartEndStation(String startEndStation) {
+        this.startEndStation = startEndStation;
+    }
 
     public String getDirId() {
         return dirId;

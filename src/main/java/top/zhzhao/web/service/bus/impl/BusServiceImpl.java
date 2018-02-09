@@ -95,7 +95,11 @@ public class BusServiceImpl implements BusService {
         List<LineDirVO> lineDirs = this.getLineDir(lineId);
         if (lineDirs != null && lineDirs.size() >0){
             for (LineDirVO dirVo:lineDirs) {
-                if (!dirVo.getValue().equals(dirId)){
+                if (dirVo.getValue().equals(dirId)){
+                    String name = dirVo.getName();
+                    String dirName = name.substring(name.indexOf("(") + 1, name.indexOf(")"));
+                    busTimeVO.setStartEndStation(dirName);
+                }else {
                     busTimeVO.setNegativeDirId(dirVo.getValue());
                 }
             }
@@ -153,10 +157,12 @@ public class BusServiceImpl implements BusService {
         Iterator<Element> iter = span.iterator();
         ArrayList<BusTimeStopVO> stopList = new ArrayList<>();
         BusTimeStopVO stopVO = null;
+        int index = 1;
         while (iter.hasNext()){
             Element next = iter.next();
-            stopVO = new BusTimeStopVO(next.text());
+            stopVO = new BusTimeStopVO(next.text(),index+"");
             stopList.add(stopVO);
+            index++;
         }
         //获取即将到站信息
         Elements buscE = ul.get(0).getElementsByClass("busc");
