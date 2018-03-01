@@ -16,4 +16,5 @@ import java.io.IOException;
  */
 public interface BusLineService extends IService<BusLine> {
     void updateLine() throws IOException;
+    void updateDir() throws IOException;
 }

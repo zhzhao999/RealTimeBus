@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zhzhao.web.mapper.bus.BusLineDirMapper">
+    <delete id="truncate">
+        TRUNCATE TABLE bus_line_dir
+    </delete>
+
+    <select id="findDefDirByName" parameterType="String" resultType="String">
+        SELECT d.dir_id FROM bus_line l LEFT JOIN bus_line_dir d ON l.id=d.line_id WHERE l.line_name = #{lineName}
+    </select>
+</mapper>

@@ -8,16 +8,22 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.zhzhao.web.mapper.bus.BusLineMapper;
 import top.zhzhao.web.model.bus.entity.BusLine;
+import top.zhzhao.web.model.bus.entity.BusLineDir;
+import top.zhzhao.web.model.bus.vo.LineDirVO;
+import top.zhzhao.web.service.bus.BusLineDirService;
 import top.zhzhao.web.service.bus.BusLineService;
+import top.zhzhao.web.service.bus.BusService;
 import top.zhzhao.web.utils.Constants;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -27,6 +33,11 @@ import java.util.Iterator;
 @Service
 public class BusLineServiceImpl extends ServiceImpl<BusLineMapper,BusLine>
         implements BusLineService {
+
+    @Autowired
+    private BusService busService;
+    @Autowired
+    private BusLineDirService lineDirService;
 
     @Override
     @Transactional
@@ -50,6 +61,43 @@ public class BusLineServiceImpl extends ServiceImpl<BusLineMapper,BusLine>
             this.delete(new EntityWrapper<BusLine>().eq("region_code", "bj"));
             this.insertBatch(list);
         }
+
+    }
+
+    @Override
+    @Transactional
+    public void updateDir() throws IOException {
+        List<BusLine> busLines = this
+                .selectList(new EntityWrapper<BusLine>().eq("region_code", "bj"));
+        ArrayList<BusLineDir> lineDirList = new ArrayList<>();
+        BusLineDir lineDir = null;
+        for (BusLine line:busLines) {
+            Long lineId = line.getId();
+            String lineName = line.getLineName();
+            List<LineDirVO> lineDirVOList = busService.getLineDir(lineName);
+            String dirId = null;
+            String negativeDirId = null;
+            for (int i = 0;i<lineDirVOList.size();i++){
+                String id = lineDirVOList.get(i).getValue();
+                if (i == 0){
+                    dirId = id;
+                }else {
+                    negativeDirId = id;
+                }
+            }
+            lineDir = new BusLineDir();
+            lineDir.setDirId(dirId);
+            lineDir.setLineId(lineId+"");
+            lineDir.setNegativeDirId(negativeDirId);
+            lineDirList.add(lineDir);
+        }
+
+        if (lineDirList != null && lineDirList.size() > 0){
+            //清空原始数据
+            lineDirService.truncate();
+            lineDirService.insertBatch(lineDirList);
+        }
+
 
     }
 }

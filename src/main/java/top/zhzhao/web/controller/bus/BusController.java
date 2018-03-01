@@ -10,10 +10,7 @@ import top.zhzhao.web.model.bus.entity.BusCollect;
 import top.zhzhao.web.model.bus.entity.BusLine;
 import top.zhzhao.web.model.bus.entity.BusNightLine;
 import top.zhzhao.web.model.bus.vo.*;
-import top.zhzhao.web.service.bus.BusCollectService;
-import top.zhzhao.web.service.bus.BusLineService;
-import top.zhzhao.web.service.bus.BusNightLineService;
-import top.zhzhao.web.service.bus.BusService;
+import top.zhzhao.web.service.bus.*;
 import top.zhzhao.web.utils.Constants;
 import top.zhzhao.web.utils.LineOrPlaceUtils;
 import top.zhzhao.web.utils.StringUtils;
@@ -44,6 +41,9 @@ public class BusController {
 
     @Autowired
     private BusCollectService collectService;
+
+    @Autowired
+    private BusLineDirService dirService;
     /**
      * 测试接口
      */
@@ -86,7 +86,12 @@ public class BusController {
                 }else {
                     EntityWrapper<BusLine> wrapper = new EntityWrapper<>();
                     wrapper.eq("region_code", "bj");
-                    wrapper.like("line_name",name);
+                    if (name.length() > 1){
+                        wrapper.like("line_name",name);
+                    }else{
+                        wrapper.eq("line_name",name);
+                    }
+
                     List<BusLine> lineList = lineService.selectList(wrapper);
                     ArrayList<BusLineVO> busLineVOS = new ArrayList<>();
                     BusLineVO busLineVO = null;
@@ -94,9 +99,14 @@ public class BusController {
                         for (BusLine bLine:lineList) {
                             busLineVO = new BusLineVO();
                             String lineName = bLine.getLineName();
+                            /*
+                            // 从官网查询
                             List<LineDirVO> lineDir = busService.getLineDir(lineName);
+                            */
+                            // 从数据库查询
+                            String dirId = dirService.findDefDirByName(lineName);
+                            busLineVO.setDefaultDirId(dirId);
                             busLineVO.setLineName(lineName);
-                            busLineVO.setDefaultDirId(lineDir.get(0).getValue());
                             busLineVOS.add(busLineVO);
                         }
                     }
@@ -259,6 +269,20 @@ public class BusController {
     public ResponseVO updateLine(){
         try {
             lineService.updateLine();
+            return ResponseVOUtils.generateSuccess(Constants.Msg.UpdateSuccess);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseVOUtils.generateCommonError(Constants.Msg.UpdateError);
+        }
+    }
+
+    /**
+     * 更新 线路方向 数据
+     */
+    @GetMapping("/updateDir")
+    public ResponseVO updateDir(){
+        try {
+            lineService.updateDir();
             return ResponseVOUtils.generateSuccess(Constants.Msg.UpdateSuccess);
         } catch (IOException e) {
             e.printStackTrace();
