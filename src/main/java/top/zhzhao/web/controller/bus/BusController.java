@@ -99,8 +99,7 @@ public class BusController {
                         for (BusLine bLine:lineList) {
                             busLineVO = new BusLineVO();
                             String lineName = bLine.getLineName();
-                            /*
-                            // 从官网查询
+                            /*从官网查询
                             List<LineDirVO> lineDir = busService.getLineDir(lineName);
                             */
                             // 从数据库查询
