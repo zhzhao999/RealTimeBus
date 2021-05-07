@@ -1,5 +1,4 @@
-# zhzhao
-zhzhao.top的后台代码
+# 实时公交后台代码
 
 ## Bus接口文档
 > 所有的无参请求均为GET，有参请求均为POST，注意：请求参数为JSON格式
